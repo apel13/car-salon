@@ -7,7 +7,7 @@
 using namespace std;
 
 Salon::Salon()
-        : _catalog(Catalog::generateCatalog()), _filtered(_catalog) {}
+        : _catalog(generateCatalog()), _filtered(_catalog) {}
 
 void Salon::showCarList() const {
     cout << _catalog << endl;
@@ -36,16 +36,4 @@ bool Salon::buy(Customer &customer, uint16_t id) {
     return false;
 }
 
-ostream &operator<<(ostream &os, const Catalog &catalog) {
-    os
-            << setw(4) << left << "id"
-            << setw(7) << left << "name"
-            << setw(9) << left << "color"
-            << setw(9) << left << "price"
-            << setw(6) << left << "max_speed"
-            << setw(7) << left << "weight"
-            << endl;
-    for (const auto &car : catalog.getCars())
-        os << *car << endl;
-    return os;
-}
+

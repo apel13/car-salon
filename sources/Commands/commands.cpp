@@ -6,43 +6,57 @@
 
 using namespace std;
 
-void printHelp() {
-    static array<Command, 8> command_desc = {
-            {
-                    {"сar_list ", "show the list of cars"},
-                    {"filter_list", "show the _filtered list of cars"},
-                    {"filter [field] [op] [val]", "filter the current list"},
-                    {"reset_filters", "reset all filters"},
-                    {"my_car", "show which car you own"},
-                    {"buy [ID]", "buy a specific car by ID"},
-                    {"help", "show current help"},
-                    {"exit", "exit the program"}
-            }};
 
-    cout << "available commands:" << endl;
-    for (auto &[cmd, desc] : command_desc) {
-        cout << '\t' << std::setw(26) << std::left
-             << cmd << " - " << desc << endl;
+struct Command {
+    CommandType type;
+    const char *name;
+    const char *params;
+    const char *description;
+};
+
+constexpr std::array<Command, 8> commands = {
+        {
+                {CommandType::CAR_LIST,
+                        "car_list", "",
+                        "show the list of cars"},
+                {CommandType::FILTER_LIST,
+                        "filter_list", "",
+                        "show the filtered list of cars"},
+                {CommandType::FILTER,
+                        "filter", "[field] [op] [val]",
+                        "filter the current list"},
+                {CommandType::RESET_FILTERS,
+                        "reset_filters", "",
+                        "reset all filters"},
+                {CommandType::MY_CAR,
+                        "my_car", "",
+                        "show which car you own"},
+                {CommandType::BUY,
+                        "buy", "[ID]",
+                        "buy a specific car by ID"},
+                {CommandType::HELP,
+                        "help", "",
+                        "show current help"},
+                {CommandType::EXIT,
+                        "exit", "",
+                        "exit the program"}
+        }
+};
+
+void printHelp(std::ostream &os) {
+    os << "available commands:" << endl;
+    for (auto &[_, cmd, params, desc] : commands) {
+        os << '\t'
+           << std::setw(30) << std::left << string(cmd) + " " + params
+           << " - " << desc << endl;
     }
 }
 
+
 CommandType parseCommand(std::string &command) {
-    if (command == "car_list") {
-        return CommandType::CAR_LIST;
-    } else if (command == "filter_list") {
-        return CommandType::FILTER_LIST;
-    } else if (command == "filter") {
-        return CommandType::FILTER;
-    } else if (command == "reset_filters") {
-        return CommandType::CAR_LIST;
-    } else if (command == "my_car") {
-        return CommandType::MY_CAR;
-    } else if (command == "buy") {
-        return CommandType::BUY;
-    } else if (command == "help") {
-        return CommandType::HELP;
-    } else if (command == "exit") {
-        return CommandType::EXIT;
+    for (auto &[type, cmd, params, _] : commands) {
+        if (command == string(cmd))
+            return type;
     }
     return CommandType::UNKNOWN;
 }
