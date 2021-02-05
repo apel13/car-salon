@@ -56,7 +56,7 @@ int main() {
                     printHelp(cout);
                     break;
                 case CommandType::EXIT:
-                    break;
+                    return 0;
                 default:
                     cout << "unknown command" << endl;
             }
