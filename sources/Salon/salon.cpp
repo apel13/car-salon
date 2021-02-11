@@ -31,6 +31,7 @@ bool Salon::buy(Customer &customer, uint16_t id) {
         // if we need to revert previous car
         // to the _catalog, it should be done here
         customer.setCar(ptr);
+        _filtered.extract(id);
         return true;
     }
     return false;
